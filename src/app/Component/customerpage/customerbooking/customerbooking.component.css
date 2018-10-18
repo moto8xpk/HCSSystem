@@ -1,0 +1,49 @@
+.TimePicker>label {
+  width: 100px;
+  height: 60px;
+  border-radius: 0;
+  border-color: darkslateblue;
+  color: darkslateblue;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  border-left: 10px solid darkslateblue;
+  box-shadow: 3px 3px rgb(129, 129, 129);
+}
+
+.TimePicker>label.disabled {
+  color: red;
+  opacity: 1;
+  border-color: red;
+  border-left: 10px solid rgb(214, 42, 42);
+}
+
+.TimePicker>label::after {
+  content: "Còn chỗ";
+  float: left;
+  padding: 0 10px 0 10px;
+}
+
+.TimePicker>label.disabled::after {
+  content: "Hết chỗ";
+  float: left;
+  padding: 0 10px 0 10px;
+}
+
+.TimePicker>label.active {
+  border-left: 10px solid darkslateblue;
+}
+
+.TimePicker>label.active::after {
+  /* border-left: 10px solid darkslateblue; */
+  content: "Đặt";
+  float: left;
+  padding: 0 20px 0 20px;
+}
+
+.TimePicker {
+  /* margin-top: 10px !important; */
+  margin-left: 0;
+  display: inline-block;
+  line-height: 3;
+}
+

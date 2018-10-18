@@ -1,0 +1,28 @@
+.card {
+  padding: 20px 20px !important;
+  width: 340px !important;
+  border: 1px solid rgb(226, 43, 43);
+  background-color: #fffbfb;
+}
+
+#loginStaff {
+  padding-top: 7em;
+}
+
+#btnSubmit {
+  margin-top: 30px;
+  background: indianred;
+}
+
+.error {
+  font-size: small;
+  color: red;
+}
+
+.card-signin {
+  box-shadow: inset 0px 0px 0px 2px #343a40;
+}
+
+.card-title {
+  color: darkred
+}

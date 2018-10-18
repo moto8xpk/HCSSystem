@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" routerLink="/staffhome/staffconfirm">HCS STAFF PAGE</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/staffhome/staffbooking" routerLinkActive="active">Đặt lịch</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/staffhome/staffconfirm" routerLinkActive="active">Xác nhận đơn đặt</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/staffhome/stafftime" routerLinkActive="active">Time line</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active" id="welcome">
+          Xin chào, {{id}} 
+          <a href="javascript:void(0);" (click)="logout()" style="margin-left:20px">Đăng
+            xuất <fa name="power-off"></fa></a>
+        </li>
+      </ul>
+    </span>
+  </div>
+</nav>
+<div class="second-header">
+</div>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

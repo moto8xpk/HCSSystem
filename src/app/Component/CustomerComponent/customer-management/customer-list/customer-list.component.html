@@ -1,0 +1,232 @@
+<div class="card">
+  <div class="card-body">
+    <app-customer></app-customer>
+
+    <!-- Datatable -->
+    <table datatable id="customer_table" class="table table-hover table-bordered" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead class="text-center thead-blue">
+        <tr>
+          <th>Họ tên</th>
+          <th>Giới tính</th>
+          <th>Điện thoại</th>
+          <th>Level</th>
+          <th>Tên tài khoản</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customerList">
+          <td>{{customer.FullName}}</td>
+          <td>{{customer.Gender}}</td>
+          <td>{{customer.PhoneNumber}}</td>
+          <td>{{customer.Level}}</td>
+          <td>{{customer.Username}}</td>
+          <td class="text-center" style="white-space: nowrap;">
+            <a class="btn" (click)="onEdit(customer)" (click)="open(content)" title="Cập nhật thông tin">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+            <a class="btn" (click)="onEdit(customer)" (click)="openChangePassword(contentChangePassword)" title="Đổi mật khẩu">
+              <fa name="key"></fa>
+            </a>
+            <a class="btn" (click)="onEdit(customer)" (click)="openDetail(contentDetail)" title="Xem thông tin">
+              <i class="fa fa-info-circle"></i>
+            </a>
+            <a class="btn" (click)="onDelete(customer.$key)" title="Xoá">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr></tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- Popup update form -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Cập nhật thông tin khách hàng</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="customerService.selectedCustomer.$key">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Họ tên <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="FullName" #FullName="ngModel" [(ngModel)]="customerService.selectedCustomer.FullName"
+            [ngClass]="{'is-invalid':FullName.touched && FullName.invalid}" required>
+          <div class="invalid-feedback" *ngIf="FullName?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Giới tính <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+
+          <select class="form-control" name="Gender" #Gender="ngModel" [(ngModel)]="customerService.selectedCustomer.Gender"
+            [ngClass]="{'is-invalid':Gender.touched && Gender.invalid}" required>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="Gender?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Điện thoại <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="PhoneNumber" #PhoneNumber="ngModel" [(ngModel)]="customerService.selectedCustomer.PhoneNumber"
+            [ngClass]="{'is-invalid':PhoneNumber.touched && PhoneNumber.invalid}" required>
+          <div class="invalid-feedback" *ngIf="PhoneNumber?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Địa chỉ</label>
+        <div class="col-sm-8">
+          <textarea class="form-control" name="Address" #Address="ngModel" [(ngModel)]="customerService.selectedCustomer.Address"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Thành viên <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="Level" #Level="ngModel" [(ngModel)]="customerService.selectedCustomer.Level"
+            [ngClass]="{'is-invalid':Level.touched && Level.invalid}" required readonly>
+          <div class="invalid-feedback" *ngIf="Level?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+      <input class="form-control" type="hidden" name="Username" #Username="ngModel" [(ngModel)]="customerService.selectedCustomer.Username">
+
+      <input type="hidden" class="form-control" name="Password" #Password="ngModel" [(ngModel)]="customerService.selectedCustomer.Password">
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" [disabled]="!customerForm.valid" (click)="onSubmit(customerForm)"
+      (click)="c('Save click')">
+      <i class="fa fa-floppy-o"></i>
+      Lưu</button>
+  </div>
+</ng-template>
+
+<!-- Detail -->
+<ng-template #contentDetail let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Thông tin khách hàng</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #customerForm="ngForm" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="customerService.selectedCustomer.$key">
+
+      <button type="button" class="btn btn-lg btn-primary col-md-12" disabled>{{customerService.selectedCustomer.FullName}}</button>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <p>
+            <span class="font-weight-bold">Giới tính:</span> {{customerService.selectedCustomer.Gender}}</p>
+          <p>
+            <span class="font-weight-bold">Điện thoại:</span> {{customerService.selectedCustomer.PhoneNumber}}</p>
+          <p>
+            <span class="font-weight-bold">Thành viên:</span> {{customerService.selectedCustomer.Level}}</p>
+          <p>
+            <span class="font-weight-bold">Tên tài khoản:</span> {{customerService.selectedCustomer.Username}}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="c('Save click')">Đóng</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Popup change password -->
+<ng-template #contentChangePassword let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Đổi mật khẩu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #changePasswordForm="ngForm" (ngSubmit)="onSubmit(changePasswordForm)" name="myForm">
+      <p class="text-center text-danger alert-danger" *ngIf="ErrorMessage">{{ErrorMessage}}</p>
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="customerService.selectedCustomer.$key">
+      <input type="hidden" class="form-control" name="FullName" #FullName="ngModel" [(ngModel)]="customerService.selectedCustomer.FullName">
+      <input type="hidden" class="form-control" name="Gender" #Gender="ngModel" [(ngModel)]="customerService.selectedCustomer.Gender">
+      <input type="hidden" class="form-control" name="PhoneNumber" #PhoneNumber="ngModel" [(ngModel)]="customerService.selectedCustomer.PhoneNumber">
+      <textarea hidden class="form-control" name="Address" #Address="ngModel" [(ngModel)]="customerService.selectedCustomer.Address"></textarea>
+      <input type="hidden" class="form-control" name="Level" #Level="ngModel" [(ngModel)]="customerService.selectedCustomer.Level">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Tên tài khoản <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="Username" #Username="ngModel" [(ngModel)]="customerService.selectedCustomer.Username"
+            [ngClass]="{'is-invalid':Username.touched && Username.invalid}" required pattern="^[a-zA-Z0-9_-]{8,15}$"
+            readonly>
+          <div class="invalid-feedback" *ngIf="Username?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Mật khẩu cũ<span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="OldPassword" #OldPassword="ngModel" [(ngModel)]="customerService.selectedCustomer.OldPassword"
+            [ngClass]="{'is-invalid':OldPassword.touched && OldPassword.invalid}" type="password" required>
+          <div class="invalid-feedback" *ngIf="OldPassword?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Mật khẩu mới<span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="Password" #Password="ngModel" [(ngModel)]="customerService.selectedCustomer.Password"
+            [ngClass]="{'is-invalid':Password.touched && Password.invalid}" type="password" required>
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="ConfirmPassword" #ConfirmPassword="ngModel" [ngModel]="customerService.selectedCustomer.ConfirmPassword"
+            type="password" [ngClass]="{'is-invalid':ConfirmPassword.touched && ConfirmPassword.invalid}" required
+            compare="Password">
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="ConfirmPassword?.errors?.compare">
+            Mật khẩu không trùng!
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" [disabled]="!changePasswordForm.valid" (click)="onChangePasswordSubmit(changePasswordForm)">
+      <i class="fa fa-floppy-o"></i>
+      Lưu</button>
+  </div>
+</ng-template>

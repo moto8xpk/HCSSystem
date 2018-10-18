@@ -1,0 +1,13 @@
+form[name="myForm"] label {
+    text-align: right;
+    font-weight: bold;
+}
+
+.modal-header {
+    background-color: darkslateblue;
+    color: white;
+}
+
+.close > span, close > span:hover {
+    color: white;
+}

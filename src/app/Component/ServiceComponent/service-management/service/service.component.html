@@ -1,0 +1,66 @@
+<div class="form-group">
+  <button class="btn btn-primary btn-sm" (click)="open(content)">
+    <i class="fa fa-plus"></i> Thêm mới
+  </button>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Thêm dịch vụ</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #serviceForm="ngForm" (ngSubmit)="onSubmit(serviceForm)" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="serviceService.selectedService.$key">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Tên dịch vụ <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="ServiceName" #ServiceName="ngModel" [(ngModel)]="serviceService.selectedService.ServiceName"
+            [ngClass]="{'is-invalid':ServiceName.touched && ServiceName.invalid}" required>
+          <div class="invalid-feedback" *ngIf="ServiceName?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Mô tả</label>
+        <div class="col-sm-9">
+          <textarea class="form-control" name="descr" #descr="ngModel" [(ngModel)]="serviceService.selectedService.descr"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Thời gian (Phút) <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="TimeUnit" #TimeUnit="ngModel" [(ngModel)]="serviceService.selectedService.TimeUnit"
+            [ngClass]="{'is-invalid':TimeUnit.touched && TimeUnit.invalid}" required>
+          <div class="invalid-feedback" *ngIf="TimeUnit?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Giá <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Price" #Price="ngModel" [(ngModel)]="serviceService.selectedService.Price"
+            [ngClass]="{'is-invalid':Price.touched && Price.invalid}" required>
+          <div class="invalid-feedback" *ngIf="Price?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" [disabled]="!serviceForm.valid" (click)="onSubmit(serviceForm)"
+      (click)="c('Save click')">
+      <i class="fa fa-floppy-o"></i>
+      Thêm</button>
+  </div>
+</ng-template>

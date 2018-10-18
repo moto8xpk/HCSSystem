@@ -1,0 +1,131 @@
+/* breadcrumb */
+/** The Magic **/
+.btn-breadcrumb .btn:not(:last-child):after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 17px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 10px solid white;
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  left: 100%;
+  z-index: 3;
+}
+
+.btn-breadcrumb .btn:not(:last-child):before {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 17px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 10px solid rgb(173, 173, 173);
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  margin-left: 1px;
+  left: 100%;
+  z-index: 3;
+}
+
+/** The Spacing **/
+.btn-breadcrumb .btn {
+  padding: 6px 12px 6px 24px;
+}
+
+.btn-breadcrumb .btn:first-child {
+  padding: 6px 6px 6px 10px;
+}
+
+.btn-breadcrumb .btn:last-child {
+  padding: 6px 18px 6px 24px;
+}
+
+/** Primary button **/
+.btn-breadcrumb .btn.btn-primary:not(:last-child):after {
+  border-left: 10px solid #428bca;
+}
+
+.btn-breadcrumb .btn.btn-primary:not(:last-child):before {
+  border-left: 10px solid #357ebd;
+}
+
+.btn-breadcrumb .btn.btn-primary:hover:not(:last-child):after {
+  border-left: 10px solid #3276b1;
+}
+
+.btn-breadcrumb .btn.btn-primary:hover:not(:last-child):before {
+  border-left: 10px solid #285e8e;
+}
+
+
+/* btn */
+#btnTime {
+  margin-left: 30px !important;
+}
+
+#btnTime>.btn {
+  width: 100px;
+  height: 60px;
+  border-radius: 0;
+  border-color: rgba(27, 2, 253, 0.884);
+  color: blue;
+  /* margin-right: 6px;
+  margin-bottom: 6px; */
+  border-bottom: 6px solid rgba(27, 2, 253, 0.712);
+  /* border-left: 1px solid #333; */
+  /* box-shadow: 3px 3px rgb(129, 129, 129); */
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  pointer-events: none;
+}
+
+#btnTime>button[disabled] {
+  color: red;
+  opacity: 1;
+  border-color: rgba(253, 40, 2, 0.884);
+  border-bottom: 6px solid rgba(253, 40, 2, 0.767);
+}
+
+#btnTime>button::after {
+  /* content: "Còn chỗ"; */
+  float: left;
+  padding: 0 10px 0 10px;
+}
+
+#btnTime>button[disabled]::after {
+  /* content: "Hết chỗ"; */
+  float: left;
+  padding: 0 10px 0 10px;
+}
+
+#booked {
+  width: 100px;
+  height: 6px;
+  border-radius: 0;
+  background-color: rgba(253, 40, 2, 0.767);
+  border: none;
+}
+
+#available {
+  width: 100px;
+  height: 6px;
+  border-radius: 0;
+  background-color: rgba(27, 2, 253, 0.712);
+  border: none;
+
+}
+
+.inline {
+  float: right;
+  margin-top: 36px;
+  display: inline-grid
+}
+
+.breadcrumb {
+  box-shadow: 0px 2px 5px 0px slateblue;
+}

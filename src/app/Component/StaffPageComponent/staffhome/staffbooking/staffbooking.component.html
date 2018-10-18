@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Đặt lịch</h4>
+        <hr>
+        <form #bookingForm="ngForm" (ngSubmit)="onSubmit(bookingForm)" name="myForm">
+          <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="bookingService.selectedBooking.$key">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Họ tên <span class="text-danger">*</span></label>
+              <input id="FullName" type="text" class="form-control" name="CustomerName" #CustomerName="ngModel"
+                [(ngModel)]="bookingService.selectedBooking.CustomerName" required [ngClass]="{'is-invalid':CustomerName.touched && CustomerName.errors}">
+              <div *ngIf="CustomerName.touched && CustomerName.errors" class="invalid-feedback">
+                <div *ngIf="CustomerName.errors.required">Vui lòng nhập họ tên</div>
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label>Giới tính <span class="text-danger">*</span></label>
+              <select class="form-control custom-select" name="Gender" #Gender="ngModel" [(ngModel)]="bookingService.selectedBooking.Gender"
+                required [ngClass]="{'is-invalid':Gender.touched && Gender.errors}">
+                <option selected>Nam</option>
+                <option>Nữ</option>
+              </select>
+              <div *ngIf="Gender.touched && Gender.errors" class="invalid-feedback">
+                <div *ngIf="Gender.errors.required">Vui lòng chọn giới tính</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label>Số điện thoại <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="Phone" #Phone="ngModel" [(ngModel)]="bookingService.selectedBooking.Phone"
+                required [ngClass]="{'is-invalid':Phone.touched  && Phone.errors}">
+              <div *ngIf="Phone.touched && Phone.errors" class="invalid-feedback">
+                <div *ngIf="Phone.errors.required">Vui lòng nhập số điện thoại</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Chọn dịch vụ <span class="text-danger">*</span></label>
+              <ng-multiselect-dropdown [placeholder]="'Chọn dịch vụ'" [data]="serviceNameList" [settings]="dropdownServiceSettings"
+                (onSelect)="onItemServiceSelect($event)" (onSelectAll)="onServiceSelectAll($event)" name="Services" #Services="ngModel"
+                [(ngModel)]="bookingService.selectedBooking.Services" required [ngClass]="{'is-invalid':Services.touched  && Services.errors}">
+              </ng-multiselect-dropdown>
+              <div *ngIf="Services.touched && Services.errors" class="invalid-feedback">
+                <div *ngIf="Services.errors.required">Vui lòng chọn dịch vụ</div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Chọn Stylish</label>
+              <ng-multiselect-dropdown [placeholder]="'Chọn Stylish'" [data]="staffList" [settings]="dropdownStaffSettings"
+                [(ngModel)]="selectedItems" (onSelect)="onItemStylishSelect($event)" (onSelectAll)="onStylishSelectAll($event)" name="StaffName"
+                #StaffName="ngModel" id="slcStaff">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Chọn ngày <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="form-control" ngbDatepicker #d="ngbDatepicker" name="Date" #Date="ngModel" [(ngModel)]="model"
+                  (ngModelChange)="onChangeDateSelected($event)" required [ngClass]="{'is-invalid':Date.touched && Date.errors}" (navigate)="date = $event.next" readonly>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" (click)="d.toggle()" type="button"><i class="fa fa-caret-down"></i></button>
+                </div>
+                <div *ngIf="Date.touched && Date.errors" class="invalid-feedback">
+                  <div *ngIf="Date.errors.required">Vui lòng chọn ngày</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-12">
+              <label>Chọn giờ <span class="text-danger">*</span></label>
+              <div class="form-group">
+                <div class="btn-group btn-group-toggle TimePicker" ngbRadioGroup name="StartTime" #StartTime="ngModel"
+                  [(ngModel)]="bookingService.selectedBooking.StartTime" required [ngClass]="{'is-invalid':StartTime.touched && StartTime.errors}">
+                  <label *ngFor="let timer of time" ngbButtonLabel class="btn-outline-primary">
+                    <input ngbButton type="radio" [value]="(timer.TimeVal)" [disabled]="(timer.isDisable)">{{timer.TimeFrame}}
+                  </label>
+                  <div *ngIf="StartTime.touched && StartTime.errors" class="invalid-feedback">
+                    <div *ngIf="StartTime.errors.required">Vui lòng chọn giờ</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name="EndTime" #EndTime="ngModel" [(ngModel)]="bookingService.selectedBooking.EndTime">
+
+            <pre>{{bookingService.selectedBooking.StartTime | json}}</pre>
+          </div>
+          <hr>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" [disabled]="!bookingForm.valid" (click)="openVerticallyCentered(content)">Đặt
+              lịch</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<!-- Info Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Thông báo </h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="message">{{message}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

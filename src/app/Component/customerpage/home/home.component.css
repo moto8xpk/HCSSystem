@@ -1,0 +1,43 @@
+.text-center {
+  text-align: center;
+}
+
+.container-fluid {
+  padding-bottom: 0;
+}
+
+#page_footer {
+  color: white
+}
+
+#page_footer label {
+  font-weight: bold;
+}
+
+#contact_list li {
+  list-style-type: none;
+
+}
+
+#contact_list {
+  padding-left: initial;
+  line-height: 3em
+}
+
+#copy_footer {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#copy_footer p {
+  font-weight: bold;
+}
+
+#workingtime .card-text {
+  font-weight: bold;
+  color: #b81623;
+  text-align: center
+}
+
+#main {
+    padding-top: 60px !important
+}

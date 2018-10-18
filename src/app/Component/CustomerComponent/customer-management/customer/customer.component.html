@@ -1,0 +1,118 @@
+<div class="form-group">
+  <button class="btn btn-primary btn-sm" (click)="open(content)">
+    <i class="fa fa-plus"></i> Thêm mới
+  </button>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Thêm khách hàng</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)" name="myForm">
+      <p class="text-center text-danger alert-danger" *ngIf="ErrorMessage">{{ErrorMessage}}</p>
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="customerService.selectedCustomer.$key">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Họ tên <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="FullName" #FullName="ngModel" [(ngModel)]="customerService.selectedCustomer.FullName"
+            [ngClass]="{'is-invalid':FullName.touched && FullName.invalid}" required>
+          <div class="invalid-feedback" *ngIf="FullName?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Giới tính <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <select class="form-control" name="Gender" #Gender="ngModel" [(ngModel)]="customerService.selectedCustomer.Gender"
+            [ngClass]="{'is-invalid':Gender.touched && Gender.invalid}" required>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="Gender?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Điện thoại <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="PhoneNumber" #PhoneNumber="ngModel" [(ngModel)]="customerService.selectedCustomer.PhoneNumber"
+            [ngClass]="{'is-invalid':PhoneNumber.touched && PhoneNumber.invalid}" required>
+          <div class="invalid-feedback" *ngIf="PhoneNumber?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Địa chỉ</label>
+        <div class="col-sm-9">
+          <textarea class="form-control" name="Address" #Address="ngModel" [(ngModel)]="customerService.selectedCustomer.Address"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Thành viên <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Level" #Level="ngModel" [(ngModel)]="customerService.selectedCustomer.Level"
+            [ngClass]="{'is-invalid':Level.touched && Level.invalid}" required readonly>
+          <div class="invalid-feedback" *ngIf="Level?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Tên tài khoản <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Username" #Username="ngModel" [(ngModel)]="customerService.selectedCustomer.Username"
+            [ngClass]="{'is-invalid':Username.touched && Username.invalid}" required pattern="^[a-zA-Z0-9_-]{8,15}$">
+          <div class="invalid-feedback" *ngIf="Username?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Mật khẩu <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Password" #Password="ngModel" [(ngModel)]="customerService.selectedCustomer.Password"
+            type="password" [ngClass]="{'is-invalid':Password.touched && Password.invalid}" required>
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="ConfirmPassword" #ConfirmPassword="ngModel" [ngModel]="customerService.selectedCustomer.ConfirmPassword"
+            type="password" [ngClass]="{'is-invalid':ConfirmPassword.touched && ConfirmPassword.invalid}" required
+            compare="Password">
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="ConfirmPassword?.errors?.compare">
+            Mật khẩu không trùng!
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" [disabled]="!customerForm.valid" (click)="onSubmit(customerForm)">
+          <i class="fa fa-floppy-o"></i>
+          Thêm</button>
+      </div>
+    </form>
+  </div>
+
+</ng-template>

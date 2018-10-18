@@ -1,0 +1,83 @@
+#sticky-sidebar {
+  min-height: -webkit-fill-available;
+  width: 250px;
+  background-color: darkslateblue !important;
+}
+
+.offset-3 {
+  margin-left: 250px;
+}
+
+.position-fixed {
+  width: -webkit-fill-available;
+}
+
+.menu-top {
+  z-index: 1000;
+  background-color: indigo;
+}
+
+#main {
+  padding-top: 70px;
+  /* overflow: auto; */
+  padding-bottom: 70px;
+  background: rgba(211, 204, 227, 0.3);
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, rgb(254, 253, 255), rgba(254, 253, 255));
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, rgb(255, 255, 255), rgba(254, 253, 255));
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* Sidebar Styles */
+.sidebar-nav {
+  top: 0;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 40px;
+}
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: aliceblue;
+}
+
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus,
+.sidebar-nav li a:visited,
+.sidebar-nav li a.active {
+  text-decoration: none;
+  background-color: blueviolet;
+}
+
+.sidebar-nav>.sidebar-brand {
+  height: 65px;
+  font-size: 18px;
+  line-height: 60px;
+}
+
+.sidebar-nav>.sidebar-brand a {
+  color: #999999;
+}
+
+.sidebar-nav>.sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+
+.menu-top {
+  box-shadow: 0px 2px 5px 0px slateblue;
+}

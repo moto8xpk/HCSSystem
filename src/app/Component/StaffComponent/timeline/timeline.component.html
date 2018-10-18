@@ -1,0 +1,47 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/dashboard/staff">Home</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">TimelineManagement</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="form-row">
+
+      <div class="form-group col-md-3">
+        <label>Chọn ngày</label>
+        <div class="input-group">
+          <input class="form-control" ngbDatepicker #d="ngbDatepicker" name="Date" #Date="ngModel" [(ngModel)]="model"
+            (ngModelChange)="onChangeDateSelected($event)" required [ngClass]="{'is-invalid':Date.touched && Date.errors}"
+            (navigate)="date = $event.next" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-primary" (click)="d.toggle()" type="button"><i class="fa fa-caret-down"></i></button>
+          </div>
+          <div *ngIf="Date.touched && Date.errors" class="invalid-feedback">
+            <div *ngIf="Date.errors.required">Vui lòng chọn ngày</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label>Chọn Stylish</label>
+        <ng-multiselect-dropdown [placeholder]="'Chọn Stylish'" [data]="staffList" [settings]="dropdownStaffSettings"
+          [(ngModel)]="selectedItems" (onSelect)="onItemStylishSelect($event)" (onSelectAll)="onStylishSelectAll($event)"
+          name="StaffName" #StaffName="ngModel" id="slcStaff">
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group col-md-3">
+        <div class="inline"><label id="booked"></label><label>Đã đặt</label></div>
+        <div class="inline"><label id="available"></label><label>Chưa đặt</label></div>
+      </div>
+    </div>
+
+    <label>Giờ <fa name="cog" animation="spin" style="color:darkslateblue"></fa></label>
+    <div id="btnTime" class="form-group">
+      <button class="btn btn-outline-primary" *ngFor="let timer of time" [value]="(timer.TimeVal)" [disabled]="(timer.isDisable)">{{timer.TimeFrame}}</button>
+    </div>
+
+  </div>
+</div>

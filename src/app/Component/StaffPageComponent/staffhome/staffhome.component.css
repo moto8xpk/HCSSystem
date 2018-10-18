@@ -1,0 +1,27 @@
+.bg-dark {
+  background-color: indianred !important
+}
+
+.second-header {
+  background-color: rgb(255, 240, 240) !important;
+  height: 20px;
+  margin-bottom: 3em;
+}
+
+.container {
+  margin-bottom: 3em;
+}
+
+a.nav-link.active {
+  background: brown;
+}
+
+#welcome {
+  color: #fff;
+  font-weight: bold
+}
+
+#welcome > a{
+  color: #fff;
+  font-weight: normal !important
+}

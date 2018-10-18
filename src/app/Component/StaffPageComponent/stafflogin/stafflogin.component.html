@@ -1,0 +1,33 @@
+<div class="container-fluid" id="loginStaff">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-center">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">WELCOME STAFF</h5>
+          <p *ngIf="message" class="text-center error">{{message}}</p>
+          <form class="form-signin" [formGroup]="staffLoginForm" (ngSubmit)="loginStaff()">
+            <!-- <div class="form-group clearfix" [ngClass]="{ 'has-error': submitted && f.username.errors }"> -->
+            <label>Tên tài khoản</label>
+            <input type="text" formControlName="username" id="inputEmail" class="form-control form-control-sm" required
+              autofocus [ngClass]="{'is-invalid':submitted && f.username.errors}" autocomplete="off">
+            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+              <div *ngIf="f.username.errors.required" class="error">Vui lòng nhập tên tài khoản</div>
+              <!-- </div> -->
+            </div>
+            <div class="form-group clearfix" [ngClass]="{ 'has-error': submitted && f.password.errors }">
+              <label>Mật khẩu</label>
+              <input type="password" formControlName="password" id="inputPassword" class="form-control form-control-sm"
+                required [ngClass]="{'is-invalid':submitted && f.password.errors}" autocomplete="off">
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required" class="error">Vui lòng nhập mật khẩu</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button id="btnSubmit" class="btn btn-sm btn-block text-uppercase" type="submit">ĐĂNG NHẬP</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

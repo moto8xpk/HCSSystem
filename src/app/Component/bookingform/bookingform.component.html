@@ -1,0 +1,80 @@
+<button id="btn-cre-service" class="btn btn-primary btn-sm" (click)="open(content)">
+  <i class="fa fa-user-plus"></i>Book
+</button>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">BOOK FORM</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form name="myForm">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Service</span>
+        </div>
+        <input class="form-control">
+      </div>
+
+      <div class="input-group mb-3">
+        <!-- <div class="input-group-prepend">
+          <span class="input-group-text">Date</span>
+        </div> -->
+        <!-- <input type="text" ngbDatepicker #d="ngbDatepicker"/> -->
+        <input class="form-control" type="text" ngbDatepicker #d="ngbDatepicker" />
+        <button (click)="d.toggle()" class="btn btn-primary">
+          <i class="fa fa-calendar "></i>
+        </button>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-primary">8:00</button>
+          <button type="button" class="btn btn-primary">8:30</button>
+          <button type="button" class="btn btn-primary">9:00</button>
+          <button type="button" class="btn btn-primary">9:30</button>
+          <button type="button" class="btn btn-primary">10:00</button>
+          <button type="button" class="btn btn-primary">10:30</button>
+          <button type="button" class="btn btn-primary">11:00</button>
+          <button type="button" class="btn btn-primary">11:30</button>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-primary">13:00</button>
+          <button type="button" class="btn btn-primary">13:30</button>
+          <button type="button" class="btn btn-primary">14:00</button>
+          <button type="button" class="btn btn-primary">14:30</button>
+          <button type="button" class="btn btn-primary">15:00</button>
+          <button type="button" class="btn btn-primary">15:30</button>
+          <button type="button" class="btn btn-primary">16:00</button>
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Choose Stylist</span>
+        </div>
+        <!-- <input class="form-control"> -->
+        <select class="form-control">
+          <option selected>None</option>
+          <option>Nguyen Van A</option>
+          <option>Nguyen Van B</option>
+          <option>Nguyen Van C</option>
+          <option>Nguyen Van D</option>
+          <option>Nguyen Van E</option>
+          <option>Nguyen Van F</option>
+          <option>Nguyen Van G</option>
+        </select>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" (click)="c('Save click')">
+      <i class="fa fa-floppy-o"></i>
+      Submit</button>
+  </div>
+</ng-template>

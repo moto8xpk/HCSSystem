@@ -1,0 +1,29 @@
+form[name="myForm"] label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.modal-header {
+  background-color: darkslateblue;
+  color: white;
+}
+
+.close>span,
+close>span:hover {
+  color: white;
+}
+
+#Tdwaiting {
+  color: rgba(253, 40, 2, 0.884);
+  font-weight: bold
+}
+
+#Tdconfirm {
+  color: rgba(27, 2, 253, 0.884);
+  font-weight: bold
+}
+
+#Tdcancel {
+  color: rgba(6, 5, 20, 0.689);
+  font-weight: bold
+}

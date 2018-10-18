@@ -1,0 +1,23 @@
+.bg-dark {
+  background-color: cadetblue !important;
+}
+
+.second-header {
+  background-color: aliceblue !important;
+  height: 20px;
+  margin-bottom: 3em;
+}
+
+a.nav-link.active {
+  background: darkslategray;
+}
+
+#welcome {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#welcome > a {
+    font-weight: normal !important;
+    color: #ffffff;
+}

@@ -1,0 +1,194 @@
+<div class="card">
+  <div class="card-body">
+    <app-booking></app-booking>
+
+    <!-- Datatable -->
+    <table datatable id="booking_table" class="table table-hover table-bordered" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead class="text-center thead-blue">
+        <tr>
+          <th>Tên khách hàng</th>
+          <th>Giới tính</th>
+          <th>Điện thoại</th>
+          <th>Stylish</th>
+          <th>Ngày</th>
+          <th>Giờ</th>
+          <th>Trạng thái</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of allBookingList">
+          <td>{{booking.CustomerName}}</td>
+          <td>{{booking.Gender}}</td>
+          <td>{{booking.Phone}}</td>
+          <td>{{booking.StaffName}}</td>
+          <td>{{booking.Date}}</td>
+          <td>{{booking.StartTime}}</td>
+          <td *ngIf="booking.Status === 1" id="Tdwaiting">Đang chờ</td>
+          <td *ngIf="booking.Status === 2" id="Tdconfirm">Đã xác nhận</td>
+          <td *ngIf="booking.Status === 3" id="Tdcancel">Đã huỷ</td>
+          <td class="text-center" style="white-space: nowrap;">
+            <a *ngIf="booking.Status === 1" title="Xác nhận đơn đặt" class="btn" (click)="onConfirmBooking(booking.$key)">
+              <fa name="check-circle"></fa>
+            </a>
+            <a title="Huỷ đơn đặt" *ngIf="booking.Status === 1" class="btn" (click)="onCancelBooking(booking.$key)">
+              <i class="fa fa-trash"></i>
+            </a>
+            <a title="Xem thông tin đơn đặt" class="btn" (click)="onEdit(booking)" (click)="openDetail(contentDetail)">
+              <i class="fa fa-info-circle"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr></tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<!-- Popup form -->
+<!-- <ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Update Customer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="customerService.selectedCustomer.$key">
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Full name</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="FullName" #FullName="ngModel" [(ngModel)]="customerService.selectedCustomer.FullName"
+            [ngClass]="{'is-invalid':FullName.touched && FullName.invalid}" required>
+          <div class="invalid-feedback" *ngIf="FullName?.errors?.required">
+            <div>FullName is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Gender</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Gender" #Gender="ngModel" [(ngModel)]="customerService.selectedCustomer.Gender"
+            [ngClass]="{'is-invalid':Gender.touched && Gender.invalid}" required>
+          <div class="invalid-feedback" *ngIf="Gender?.errors?.required">
+            <div>Gender is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Phone</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="PhoneNumber" #PhoneNumber="ngModel" [(ngModel)]="customerService.selectedCustomer.PhoneNumber"
+            [ngClass]="{'is-invalid':PhoneNumber.touched && PhoneNumber.invalid}" required>
+          <div class="invalid-feedback" *ngIf="PhoneNumber?.errors?.required">
+            <div>Phone Number is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Address</label>
+        <div class="col-sm-9">
+          <textarea class="form-control" name="Address" #Address="ngModel" [(ngModel)]="customerService.selectedCustomer.Address"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Level</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Level" #Level="ngModel" [(ngModel)]="customerService.selectedCustomer.Level"
+            [ngClass]="{'is-invalid':Level.touched && Level.invalid}" required>
+          <div class="invalid-feedback" *ngIf="Level?.errors?.required">
+            <div>Level is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Username</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Username" #Username="ngModel" [(ngModel)]="customerService.selectedCustomer.Username"
+            [ngClass]="{'is-invalid':Username.touched && Username.invalid}" required pattern="^[a-zA-Z0-9_-]{8,15}$">
+          <div class="invalid-feedback" *ngIf="Username?.errors?.required">
+            <div>Username is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Password</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Password" #Password="ngModel" [(ngModel)]="customerService.selectedCustomer.Password"
+            [ngClass]="{'is-invalid':Password.touched && Password.invalid}" type="password" required>
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>Password is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Confirm Password</label>
+        <div class="col-sm-9">
+          <input class="form-control" name="ConfirmPassword" #ConfirmPassword="ngModel" [ngModel]="customerService.selectedCustomer.ConfirmPassword"
+            type="password" [ngClass]="{'is-invalid':ConfirmPassword.touched && ConfirmPassword.invalid}" required
+            compare="Password">
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>Confirm Password is required.</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="ConfirmPassword?.errors?.compare">
+            Password does not match!
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" [disabled]="!customerForm.valid" (click)="onSubmit(customerForm)"
+      (click)="c('Save click')">
+      <i class="fa fa-floppy-o"></i>
+      Submit</button>
+  </div>
+</ng-template> -->
+
+<!-- Detail -->
+<ng-template #contentDetail let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Thông tin đơn đặt</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #bookingForm="ngForm" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="BookingService.selectedBooking.$key">
+
+      <button type="button" class="btn btn-lg btn-primary col-md-12" disabled>{{BookingService.selectedBooking.CustomerName}}</button>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <p>
+            <span class="font-weight-bold">Giới tính:</span> {{BookingService.selectedBooking.Gender}}</p>
+          <p>
+            <span class="font-weight-bold">Điện thoại:</span> {{BookingService.selectedBooking.Phone}}</p>
+          <p>
+            <span class="font-weight-bold">Dịch vụ:</span> {{BookingService.selectedBooking.Services}}</p>
+          <p>
+            <span class="font-weight-bold">Stylish:</span> {{BookingService.selectedBooking.StaffName}}</p>
+          <p>
+            <span class="font-weight-bold">Ngày:</span> {{BookingService.selectedBooking.Date}}</p>
+          <p>
+            <span class="font-weight-bold">Giờ:</span> {{BookingService.selectedBooking.StartTime}}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="c('Save click')">Close</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

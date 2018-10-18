@@ -1,0 +1,279 @@
+<div class="card">
+  <div class="card-body">
+    <app-staff></app-staff>
+
+    <!-- Datatable -->
+    <table datatable id="staff_table" class="table table-hover table-striped table-bordered" [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger">
+      <thead class="text-center thead-blue">
+        <tr>
+          <th>Họ tên</th>
+          <th>Tên tài khoản</th>
+          <th>Số điện thoại</th>
+          <th>Địa chỉ</th>
+          <th>Lương</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let staff of staffList">
+          <td>{{staff.FullName}}</td>
+          <td>{{staff.Username}}</td>
+          <td>{{staff.PhoneNumber}}</td>
+          <td>{{staff.Address}}</td>
+          <td>{{staff.Salary}} VND</td>
+          <td class="text-center" style="white-space: nowrap">
+            <a class="btn" (click)="onEdit(staff)" (click)="open(content)">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+            <a class="btn" (click)="onEdit(staff)" (click)="openChangePassword(contentChangePassword)" title="Đổi mật khẩu">
+              <fa name="key"></fa>
+            </a>
+            <a class="btn" (click)="onDelete(staff.$key)">
+              <i class="fa fa-trash-o"></i>
+            </a>
+            <a class="btn" (click)="onEdit(staff)" (click)="openDetail(detailContent)">
+              <i class="fa fa-info-circle"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr></tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- Popup form -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Cập nhật thông tin nhân viên</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form #staffForm="ngForm" (ngSubmit)="onSubmit(staffForm)" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="staffService.selectedStaff.$key">
+
+      <input class="form-control" type="hidden" name="Username" #Username="ngModel" [(ngModel)]="staffService.selectedStaff.Username">
+
+      <input type="hidden" class="form-control" name="Password" #Password="ngModel" [(ngModel)]="staffService.selectedStaff.Password">
+
+      <!-- <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="ConfirmPassword" #ConfirmPassword="ngModel" [(ngModel)]="staffService.selectedStaff.ConfirmPassword"
+            type="password" value="staffService.selectedStaff.Password" [ngClass]="{'is-invalid':ConfirmPassword.touched || ConfirmPassword.invalid}"
+            required compare="Password">
+          <div class="invalid-feedback" *ngIf="ConfirmPassword?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="ConfirmPassword?.touched && ConfirmPassword?.errors?.compare">
+            Password does not match!
+          </div>
+        </div>
+      </div> -->
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Họ tên <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="FullName" #FullName="ngModel" [(ngModel)]="staffService.selectedStaff.FullName"
+            [ngClass]="{'is-invalid':FullName.touched && FullName.invalid}" required>
+          <div class="invalid-feedback" *ngIf="FullName?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Giới tính <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <select class="form-control" name="Sex" #Sex="ngModel" [(ngModel)]="staffService.selectedStaff.Sex" [ngClass]="{'is-invalid':Sex.touched && Sex.invalid}"
+            required>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="Sex?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Ngày sinh <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="DayOfBirth" #DayOfBirth="ngModel" [(ngModel)]="staffService.selectedStaff.DayOfBirth"
+            type="date" [ngClass]="{'is-invalid':DayOfBirth.touched && DayOfBirth.invalid}" required>
+          <div class="invalid-feedback" *ngIf="DayOfBirth?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Điện thoại <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="PhoneNumber" #PhoneNumber="ngModel" [(ngModel)]="staffService.selectedStaff.PhoneNumber"
+            type="number" [ngClass]="{'is-invalid':PhoneNumber.touched && PhoneNumber.invalid}" required>
+          <div class="invalid-feedback" *ngIf="PhoneNumber?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Địa chỉ</label>
+        <div class="col-sm-9">
+          <textarea class="form-control" name="Address" #Address="ngModel" [(ngModel)]="staffService.selectedStaff.Address"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Lương <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input class="form-control" name="Salary" #Salary="ngModel" [(ngModel)]="staffService.selectedStaff.Salary"
+            type="number" [ngClass]="{'is-invalid':Salary.touched && Salary.invalid}" required>
+          <div class="invalid-feedback" *ngIf="Salary?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+      {{staffForm.value | json}}
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" [disabled]="!staffForm.valid" (click)="onSubmit(staffForm)"
+          (click)="c('Save click')">
+          <i class="fa fa-floppy-o"></i>
+          Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Detail -->
+<ng-template #detailContent let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Thông tin nhân viên</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form #staffForm="ngForm" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="staffService.selectedStaff.$key">
+      <button type="button" class="btn btn-lg btn-primary col-md-12" disabled>{{staffService.selectedStaff.FullName}}</button>
+      <div class="row text-center">
+        <div class="col-md-6">
+          <p>
+            <span class="font-weight-bold">Ngày sinh:</span> {{staffService.selectedStaff.DayOfBirth}}</p>
+          <p>
+            <span class="font-weight-bold">Giới tính:</span> {{staffService.selectedStaff.Sex}}</p>
+          <p>
+            <span class="font-weight-bold">Điện thoại:</span> {{staffService.selectedStaff.PhoneNumber}}</p>
+          <p>
+            <span class="font-weight-bold">Lương:</span> {{staffService.selectedStaff.Salary}}</p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <span class="font-weight-bold">Tên tài khoản:</span> {{staffService.selectedStaff.Username}}</p>
+          <!-- <p>Password: {{staffService.selectedStaff.Password}}</p> -->
+          <p>
+            <span class="font-weight-bold">Địa chỉ:</span> {{staffService.selectedStaff.Address}}</p>
+          <p></p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="c('Save click')">Đóng</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Popup change password -->
+<ng-template #contentChangePassword let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Đổi mật khẩu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #changePasswordForm="ngForm" (ngSubmit)="onSubmit(changePasswordForm)" name="myForm">
+      <input type="hidden" name="$key" #$key="ngModel" [(ngModel)]="staffService.selectedStaff.$key">
+      <p class="text-center text-danger alert-danger" *ngIf="ErrorMessage">{{ErrorMessage}}</p>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Tên tài khoản <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="Username" #Username="ngModel" [(ngModel)]="staffService.selectedStaff.Username"
+            [ngClass]="{'is-invalid':Username.touched && Username.invalid}" required pattern="^[a-zA-Z0-9_-]{8,15}$"
+            readonly>
+          <div class="invalid-feedback" *ngIf="Username?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="Username?.errors?.pattern">
+            <div>Username has special symbol.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Mật khẩu cũ<span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="OldPassword" #OldPassword="ngModel" [(ngModel)]="staffService.selectedStaff.OldPassword"
+            [ngClass]="{'is-invalid':OldPassword.touched && OldPassword.invalid}" type="password" required>
+          <div class="invalid-feedback" *ngIf="OldPassword?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Mật khẩu mới<span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="Password" #Password="ngModel" [(ngModel)]="staffService.selectedStaff.Password"
+            type="password" [ngClass]="{'is-invalid':Password.touched && Password.invalid}" required>
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+          <input class="form-control" name="ConfirmPassword" #ConfirmPassword="ngModel" [ngModel]="staffService.selectedStaff.ConfirmPassword"
+            type="password" [ngClass]="{'is-invalid':ConfirmPassword.touched && ConfirmPassword.invalid}" required
+            compare="Password">
+          <div class="invalid-feedback" *ngIf="Password?.errors?.required">
+            <div>{{requiredMsg}}</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="ConfirmPassword?.errors?.compare">
+            Mật khẩu không trùng!
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" class="form-control" name="FullName" #FullName="ngModel" [(ngModel)]="staffService.selectedStaff.FullName">
+
+      <input type="hidden" class="form-control" name="Sex" #Sex="ngModel" [(ngModel)]="staffService.selectedStaff.Sex">
+
+      <input type="hidden" class="form-control" name="DayOfBirth" #DayOfBirth="ngModel" [(ngModel)]="staffService.selectedStaff.DayOfBirth">
+      <input type="hidden" class="form-control" name="PhoneNumber" #PhoneNumber="ngModel" [(ngModel)]="staffService.selectedStaff.PhoneNumber">
+
+      <input type="hidden" class="form-control" name="Address" #Address="ngModel" [(ngModel)]="staffService.selectedStaff.Address">
+      <input type="hidden" class="form-control" name="Salary" #Salary="ngModel" [(ngModel)]="staffService.selectedStaff.Salary">
+
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" [disabled]="!changePasswordForm.valid" (click)="onChangePasswordSubmit(changePasswordForm)">
+      <i class="fa fa-floppy-o"></i>
+      Lưu</button>
+  </div>
+</ng-template>
